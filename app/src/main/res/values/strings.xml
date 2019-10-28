@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">Quizzes</string>
-    <string name="question1">What value of y is a solution to this equation?</string>
-    <string name="eq1">10 y = 70</string>
-    <string name="ans11">y = 7</string>
-    <string name="ans12">y = 23</string>
-    <string name="question2">What value of y is a solution to this equation?</string>
-    <string name="eq2">3 y = 15</string>
-    <string name="ans21">y = 2</string>
-    <string name="ans22">y = 5</string>
-    <string name="question3">Pithagoras\' theorem is synthesized in</string>
-    <string name="eq3">c = a + b</string>
-    <string name="ans31">True</string>
-    <string name="ans32">False</string>
+    <string name="question00">What value of y is a solution to this equation?</string>
+    <string name="eq01">10 y = 70</string>
+    <string name="ans02">y = 7</string>
+    <string name="ans03">y = 23</string>
+    <string name="question10">What value of y is a solution to this equation?</string>
+    <string name="eq11">3 y = 15</string>
+    <string name="ans12">y = 2</string>
+    <string name="ans13">y = 5</string>
+    <string name="question20">Pithagoras\' theorem is synthesized in</string>
+    <string name="eq21">c = a + b</string>
+    <string name="ans22">True</string>
+    <string name="ans23">False</string>
 </resources>

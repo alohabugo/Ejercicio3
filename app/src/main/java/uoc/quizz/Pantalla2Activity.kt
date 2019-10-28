@@ -1,18 +1,21 @@
 package uoc.quizz
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_main.*
 //acceder a los id's
 import kotlinx.android.synthetic.main.activity_pantalla2.*
+
 
 class Pantalla2Activity : AppCompatActivity() {
 
     private val tag = "Pantalla 2 - PRUEBAS:"
     //respuesta elegida
-    private var chosenAnswer: Int = rdgroup.checkedRadioButtonId
+    private var chosenAnswer: Int = -1
+    private var totalQ: Int = -1
+    private var numberQ: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,31 +25,32 @@ class Pantalla2Activity : AppCompatActivity() {
         btnAction.setOnClickListener {
             changeScreen()
         }
+
+        //recoger datos
     }
 
     override fun onStart() {
         super.onStart()
         Log.i(tag, "Dentro del evento onStart()")
-        //obtenemos el número de la pregunta actual
-        val numberQ: Int = SharedData.prefs.getSharedQuestion()
+        //recogemos los datos recibidos
+        val bundle: Bundle? = intent.extras
+        //respuesta elegida
+        chosenAnswer = bundle?.getInt("result")!!
+        //numero de pregunta actual
+        numberQ = bundle?.getInt("currentQ")
+        //total de preguntas
+        totalQ = bundle?.getInt("totalQ")
+        //val numberQ: Int = SharedData.prefs.getSharedQuestion()
         checkAnswer((numberQ))
     }
 
-    private fun checkAnswer(nq: Int) = when (nq) {
-        1 -> {
-            if (this.chosenAnswer == rbAnswer1.id)
-                rightAnswer()
-            else failedAnswer()
-        }
-
-        2, 3 -> {
-            if (this.chosenAnswer == rbAnswer2.id)
-                rightAnswer()
-            else failedAnswer()
-        }
-
-        else -> {
+    private fun checkAnswer(nq: Int) {
+        if (nq == totalQ) {
             lastAnswer()
+        } else {
+            if (chosenAnswer == 1)
+                rightAnswer()
+            else failedAnswer()
         }
     }
 
@@ -54,25 +58,50 @@ class Pantalla2Activity : AppCompatActivity() {
         tvMessage.text = "RIGHT!!"
         btnAction.text = "NEXT"
         //pasamos a la siguiente pregunta
-        SharedData.prefs.incSharedQuestion()
+        //incrementamos la pregunta
+        numberQ = numberQ + 1
+        println(numberQ)
     }
 
     private fun failedAnswer(){
         tvMessage.text = "Sorry! You failed."
         btnAction.text = "TRY AGAIN"
+        //permanecemos en la pregunta
     }
 
     private fun lastAnswer(){
         tvMessage.text = "Congratulations"
         btnAction.text = "START AGAIN"
         //volvemos a empezar a la primera pregunta
-        SharedData.prefs.deleteSharedQuestion()
-        SharedData.prefs.setSharedQuestion(1)
+        //asignamos la primera pregunta
+        numberQ = 1
     }
 
     private fun changeScreen(){
+        //devolver la pregunta actual
+        print(numberQ)
+        val result = Intent()
+        result.putExtra("currentQ", this@Pantalla2Activity.numberQ)
+        setResult(Activity.RESULT_OK, result)
+        finish()
+
+
+        //val intent = Intent(this, MainActivity::class.java)
+        //intent.putExtra("currentQ", this@Pantalla2Activity.numberQ)
+        //startActivity(intent)
+
         //next screen
+       /*val intentWithResult = Intent()
+        intentWithResult.putExtra(
+            "currentQ",
+            numberQ
+        )
+        setResult(1, intentWithResult)
+        finish()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        startActivity(Intent(this@Pantalla2Activity, MainActivity::class.java).apply {
+            putExtra("currentQ", this@Pantalla2Activity.numberQ)
+        })*/
     }
 }
